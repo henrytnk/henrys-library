@@ -4,11 +4,16 @@ A modern, elegant web application to display and search through my personal book
 
 ## Features
 
-- 📚 Display all books from my reading list
+- 📚 Display all books from your reading list
 - 🔍 Real-time search functionality (search by title, author, or year)
+- 🔤 A-Z alphabet filtering
 - 🎨 Clean and modern UI using shadcn/ui components
 - 📱 Responsive grid layout
 - ⚡ Fast and lightweight with React + Vite
+- 🔐 Admin dashboard with authentication
+- ✏️ Add, edit, and delete books
+- 📥 Import books from JSON file
+- 📤 Export your library to JSON file
 
 ## Tech Stack
 
@@ -45,6 +50,19 @@ henrys-library/
 ```
 
 ## Getting Started
+
+### Environment Setup
+
+1. Copy the example environment file:
+```bash
+cp .env.example .env
+```
+
+2. Update the `.env` file with your admin credentials:
+```properties
+VITE_ADMIN_USER=your_username
+VITE_ADMIN_PASSWORD=your_password
+```
 
 ### Development
 
@@ -106,7 +124,37 @@ Simply edit `src/data/books.json` to add or modify books in your collection.
 - Theme colors are defined in `src/index.css` using CSS variables
 - Dark mode support is available through Tailwind's dark mode feature
 
-## Persistence
+## Admin Dashboard
+
+Access the admin dashboard at `/admin` or `/login`.
+
+**Default credentials:**
+- Username: `henry` (or as set in `.env`)
+- Password: `mylib` (or as set in `.env`)
+
+### Admin Features
+
+- **Add Books** - Add new books to your collection
+- **Edit Books** - Update title, author, or publication year
+- **Delete Books** - Remove books from your library
+- **Import Library** - Upload a JSON file to import books
+- **Export Library** - Download your entire collection as a JSON file
+- **Search** - Quick search to find specific books
+
+### Import/Export Format
+
+Books should be in JSON array format:
+```json
+[
+  {
+    "title": "Book Title",
+    "author": "Author Name",
+    "year": 2024
+  }
+]
+```
+
+## Data Persistence
 
 All changes made in the admin dashboard are **permanently saved** to the `src/data/books.json` file through a simple Express API server. This means:
 
@@ -114,7 +162,13 @@ All changes made in the admin dashboard are **permanently saved** to the `src/da
 - ✅ Deletions are persisted
 - ✅ New books are permanently added
 - ✅ Changes survive page refreshes and server restarts
+- ✅ Import/export your entire library
 
-The API server (`server/index.js`) provides two endpoints:
+**Note:** The `src/data` folder is gitignored to keep your personal library private.
+
+### API Endpoints
+
+The API server (`server/index.js`) provides:
 - `GET /api/books` - Fetch all books
 - `POST /api/books` - Save all books to JSON file
+- `GET /api/books/export` - Download books as JSON file

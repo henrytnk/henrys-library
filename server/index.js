@@ -36,6 +36,18 @@ app.post('/api/books', (req, res) => {
   }
 });
 
+// Export books as JSON file
+app.get('/api/books/export', (req, res) => {
+  try {
+    const data = fs.readFileSync(BOOKS_FILE, 'utf8');
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', 'attachment; filename="books-export.json"');
+    res.send(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to export books' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`API server running on http://localhost:${PORT}`);
 });

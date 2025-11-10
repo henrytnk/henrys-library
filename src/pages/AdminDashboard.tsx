@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Pencil, Trash2, LogOut, Plus, X, Save } from "lucide-react";
+import { Pencil, Trash2, LogOut, Plus, X, Save, Download, Upload } from "lucide-react";
 import type { Book } from "@/types/book";
 import { booksApi } from "@/services/api";
+import type { ChangeEvent } from "react";
 
 export function AdminDashboard() {
   const { logout } = useAuth();
@@ -105,6 +106,42 @@ export function AdminDashboard() {
     setEditForm({ title: "", author: "", year: null });
   };
 
+  const handleExport = () => {
+    booksApi.exportBooks();
+  };
+
+  const handleImport = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const importedBooks = await booksApi.importBooks(file);
+      
+      // Validate that books have required fields
+      const validBooks = importedBooks.filter(
+        (book: Book) => book.title && book.author
+      );
+
+      if (validBooks.length === 0) {
+        alert("No valid books found in the file");
+        return;
+      }
+
+      if (confirm(`Import ${validBooks.length} books? This will replace your current collection.`)) {
+        const sortedBooks = validBooks.sort((a, b) => a.title.localeCompare(b.title));
+        const success = await saveBooks(sortedBooks);
+        if (success) {
+          alert(`Successfully imported ${validBooks.length} books!`);
+        }
+      }
+    } catch (err) {
+      alert(`Import failed: ${err instanceof Error ? err.message : "Unknown error"}`);
+    }
+
+    // Reset file input
+    event.target.value = "";
+  };
+
   const filteredBooks = books.filter(
     (book) =>
       book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -145,6 +182,26 @@ export function AdminDashboard() {
               Logout
             </Button>
           </div>
+        </div>
+
+        {/* Import/Export Section */}
+        <div className="mb-6 flex gap-2 justify-end">
+          <Button variant="outline" onClick={handleExport}>
+            <Download className="mr-2 h-4 w-4" />
+            Export Library
+          </Button>
+          <Button variant="outline" asChild>
+            <label className="cursor-pointer">
+              <Upload className="mr-2 h-4 w-4" />
+              Import Library
+              <input
+                type="file"
+                accept=".json"
+                onChange={handleImport}
+                className="hidden"
+              />
+            </label>
+          </Button>
         </div>
 
         {/* Search and Add */}
