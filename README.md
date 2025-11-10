@@ -1,0 +1,120 @@
+# Henry's Library
+
+A modern, elegant web application to display and search through my personal book collection.
+
+## Features
+
+- 📚 Display all books from my reading list
+- 🔍 Real-time search functionality (search by title, author, or year)
+- 🎨 Clean and modern UI using shadcn/ui components
+- 📱 Responsive grid layout
+- ⚡ Fast and lightweight with React + Vite
+
+## Tech Stack
+
+- **React** - UI framework
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Styling
+- **shadcn/ui** - UI components
+- **Lucide React** - Icons
+
+## Project Structure
+
+```
+henrys-library/
+├── src/
+│   ├── components/
+│   │   ├── ui/           # shadcn/ui components
+│   │   │   ├── card.tsx
+│   │   │   └── input.tsx
+│   │   ├── BookCard.tsx  # Individual book display
+│   │   └── BookList.tsx  # Main component with search
+│   ├── data/
+│   │   └── books.json    # Book collection data
+│   ├── lib/
+│   │   └── utils.ts      # Utility functions
+│   ├── types/
+│   │   └── book.ts       # TypeScript types
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── tailwind.config.js
+├── postcss.config.js
+└── vite.config.ts
+```
+
+## Getting Started
+
+### Development
+
+To run both the API server and the frontend:
+
+```bash
+npm run dev:all
+```
+
+This will start:
+- API server at `http://localhost:3001`
+- Frontend at `http://localhost:5174/`
+
+To run them separately:
+
+```bash
+# Terminal 1 - API Server
+npm run server
+
+# Terminal 2 - Frontend
+npm run dev
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Features in Detail
+
+### Search
+The search functionality filters books in real-time as you type, searching across:
+- Book titles
+- Authors
+- Publication years
+
+### Book Display
+Each book is displayed in a card showing:
+- Title
+- Author
+- Publication year (when available)
+
+The cards have a subtle hover effect for better interactivity.
+
+## Customization
+
+### Adding Books
+Simply edit `src/data/books.json` to add or modify books in your collection.
+
+### Styling
+- Tailwind CSS classes can be modified in components
+- Theme colors are defined in `src/index.css` using CSS variables
+- Dark mode support is available through Tailwind's dark mode feature
+
+## Persistence
+
+All changes made in the admin dashboard are **permanently saved** to the `src/data/books.json` file through a simple Express API server. This means:
+
+- ✅ Edits are saved to disk
+- ✅ Deletions are persisted
+- ✅ New books are permanently added
+- ✅ Changes survive page refreshes and server restarts
+
+The API server (`server/index.js`) provides two endpoints:
+- `GET /api/books` - Fetch all books
+- `POST /api/books` - Save all books to JSON file
