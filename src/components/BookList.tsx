@@ -68,7 +68,7 @@ export function BookList() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Henry's Library</h1>
         <p className="text-muted-foreground">
-          A collection of {books.length} books I personally own.
+          A list of all <strong>{books.length}</strong> books in my library.
         </p>
       </div>
 

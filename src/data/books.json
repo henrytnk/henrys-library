@@ -1,5 +1,25 @@
 [
   {
+    "title": "Jesus de Nazaré",
+    "author": "Pope Benedict XVI",
+    "year": 2010
+  },
+  {
+    "title": "Introduction to Christianity",
+    "author": "Pope Benedict XVI",
+    "year": 2004
+  },
+  {
+    "title": "Confessions",
+    "author": "Augustine of Hippo",
+    "year": 1998
+  },
+  {
+    "title": "City of God",
+    "author": "Augustine of Hippo",
+    "year": 2003
+  },
+  {
     "title": "Verity",
     "author": "Colleen Hoover",
     "year": 2021
@@ -217,7 +237,7 @@
   {
     "title": "LIVRO DA CONFIANçA",
     "author": "Unknown Author",
-    "year": null
+    "year": 0
   },
   {
     "title": "18 princípios para você evoluir (Portuguese Edition)",
@@ -862,7 +882,7 @@
   {
     "title": "A Boa Sorte",
     "author": "Álex Rovira Celma",
-    "year": null
+    "year": 0
   },
   {
     "title": "Harry Potter e as Relíquias da Morte (Harry Potter, #7)",
@@ -1143,5 +1163,10 @@
     "title": "The Orthodox Study Bible",
     "author": "Anonymous",
     "year": 2008
+  },
+  {
+    "title": "Como ser Cristão",
+    "author": "C.S. Lewis",
+    "year": 2018
   }
 ]
