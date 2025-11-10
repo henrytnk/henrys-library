@@ -32,7 +32,7 @@ export function AdminDashboard() {
       setBooks(sortedBooks);
       setError(null);
     } catch (err) {
-      setError("Failed to load books. Make sure the API server is running.");
+      setError("Failed to load books.");
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -107,7 +107,7 @@ export function AdminDashboard() {
   };
 
   const handleExport = () => {
-    booksApi.exportBooks();
+    booksApi.exportBooks(books);
   };
 
   const handleImport = async (event: ChangeEvent<HTMLInputElement>) => {

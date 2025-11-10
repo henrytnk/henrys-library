@@ -66,25 +66,12 @@ VITE_ADMIN_PASSWORD=your_password
 
 ### Development
 
-To run both the API server and the frontend:
-
 ```bash
-npm run dev:all
-```
-
-This will start:
-- API server at `http://localhost:3001`
-- Frontend at `http://localhost:5174/`
-
-To run them separately:
-
-```bash
-# Terminal 1 - API Server
-npm run server
-
-# Terminal 2 - Frontend
+npm install
 npm run dev
 ```
+
+The app will be available at `http://localhost:5174/`
 
 ### Build for Production
 
@@ -97,6 +84,23 @@ npm run build
 ```bash
 npm run preview
 ```
+
+## Deployment on Netlify
+
+This app is ready to deploy on Netlify:
+
+1. Push your code to GitHub
+2. Connect your repository to Netlify
+3. Set environment variables in Netlify dashboard:
+   - `VITE_ADMIN_USER` - Your admin username
+   - `VITE_ADMIN_PASSWORD` - Your admin password
+4. Deploy!
+
+Build settings:
+- **Build command:** `npm run build`
+- **Publish directory:** `dist`
+
+The `netlify.toml` file is already configured for proper routing.
 
 ## Features in Detail
 
@@ -116,8 +120,8 @@ The cards have a subtle hover effect for better interactivity.
 
 ## Customization
 
-### Adding Books
-Simply edit `src/data/books.json` to add or modify books in your collection.
+### Adding Books (Pre-deployment)
+Edit `src/data/books.json` to set your initial book collection before deployment.
 
 ### Styling
 - Tailwind CSS classes can be modified in components
@@ -156,19 +160,16 @@ Books should be in JSON array format:
 
 ## Data Persistence
 
-All changes made in the admin dashboard are **permanently saved** to the `src/data/books.json` file through a simple Express API server. This means:
+All changes made in the admin dashboard are **stored in your browser's localStorage**. This means:
 
-- ✅ Edits are saved to disk
-- ✅ Deletions are persisted
-- ✅ New books are permanently added
-- ✅ Changes survive page refreshes and server restarts
-- ✅ Import/export your entire library
+- ✅ Edits persist across page refreshes
+- ✅ Changes are saved locally on your device
+- ✅ Each browser/device has its own collection
+- ✅ Use Import/Export to sync between devices
+- ⚠️ Clearing browser data will reset to the default `books.json`
 
-**Note:** The `src/data` folder is gitignored to keep your personal library private.
+**Initial Data:** The app loads books from `src/data/books.json` on first visit. After that, it uses localStorage for all changes.
 
-### API Endpoints
-
-The API server (`server/index.js`) provides:
-- `GET /api/books` - Fetch all books
-- `POST /api/books` - Save all books to JSON file
-- `GET /api/books/export` - Download books as JSON file
+**Syncing Between Devices:**
+1. Export your library from one device
+2. Import the JSON file on another device

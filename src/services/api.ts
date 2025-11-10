@@ -1,31 +1,39 @@
 import type { Book } from "@/types/book";
+import booksData from "@/data/books.json";
 
-const API_URL = "http://localhost:3001/api";
+const STORAGE_KEY = "henrys-library-books";
 
 export const booksApi = {
   async getAll(): Promise<Book[]> {
-    const response = await fetch(`${API_URL}/books`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch books");
+    // Check localStorage first
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {
+        // If parsing fails, fall back to default
+      }
     }
-    return response.json();
+    // Return default books from JSON file
+    return booksData as Book[];
   },
 
   async saveAll(books: Book[]): Promise<void> {
-    const response = await fetch(`${API_URL}/books`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(books),
-    });
-    if (!response.ok) {
-      throw new Error("Failed to save books");
-    }
+    // Save to localStorage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
   },
 
-  exportBooks(): void {
-    window.open(`${API_URL}/books/export`, '_blank');
+  exportBooks(books: Book[]): void {
+    const dataStr = JSON.stringify(books, null, 2);
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "books-export.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   },
 
   async importBooks(file: File): Promise<Book[]> {
@@ -40,7 +48,7 @@ export const booksApi = {
             return;
           }
           resolve(books);
-        } catch (error) {
+        } catch {
           reject(new Error("Failed to parse JSON file"));
         }
       };
